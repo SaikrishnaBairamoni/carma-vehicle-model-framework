@@ -9,6 +9,7 @@
   <maintainer email="carma@todo.todo">carma</maintainer>
   <license>Apache 2.0</license>
   <author email="carma@todo.todo">carma</author>
+  <url type="repository">https://github.com/ros/message_generation</url>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>lib_vehicle_model</depend>
