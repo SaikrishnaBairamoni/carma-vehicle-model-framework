@@ -60,7 +60,7 @@ jobs:
         printf "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu focal main\n" > /etc/apt/sources.list.d/ros1.list
         apt-get update
         rosdep update
-        rosdep install --rosdistro "$ROS_DISTRO" --from-paths /opt/carma/src/"${{ github.event.repository.name }}" --ignore-src -y
+        rosdep install --rosdistro "$ROS_DISTRO" --from-paths /opt/carma/src --ignore-src -y
     - name: Build
       run: |
         source "$INIT_ENV"
