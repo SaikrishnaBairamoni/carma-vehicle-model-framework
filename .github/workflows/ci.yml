@@ -50,7 +50,12 @@ jobs:
       run: mv $GITHUB_WORKSPACE/src /opt/carma/
     - name: Install dependencies
       run: |
+        set -euxo pipefail
         source "$INIT_ENV"
+        install -d /usr/share/keyrings
+        curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+        printf "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu focal main\n" > /etc/apt/sources.list.d/ros1.list
+        rm -f /etc/apt/sources.list.d/ros2.list || true
         apt-get update
         rosdep update
         rosdep install --from-paths /opt/carma/src/"${{ github.event.repository.name }}" --ignore-src -y
