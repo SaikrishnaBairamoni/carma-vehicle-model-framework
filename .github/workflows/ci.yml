@@ -50,7 +50,7 @@ jobs:
       run: mv $GITHUB_WORKSPACE/src /opt/carma/
     - name: Install dependencies
       run: |
-        set -euxo pipefail
+        set -eo pipefail
         source "$INIT_ENV"
         install -d /usr/share/keyrings
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
