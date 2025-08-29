@@ -52,15 +52,16 @@ jobs:
       run: |
         set -eo pipefail
         source "$INIT_ENV"
-        [ -f /opt/ros/noetic/setup.bash ] && . /opt/ros/noetic/setup.bash || true
-        export ROS_DISTRO=${ROS_DISTRO:-noetic}
         install -d /usr/share/keyrings
         curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
         rm -f /etc/apt/sources.list.d/ros2*.list /etc/apt/sources.list.d/ros-latest.list
         printf "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros/ubuntu focal main\n" > /etc/apt/sources.list.d/ros1.list
         apt-get update
+        [ -f /opt/ros/noetic/setup.bash ] && . /opt/ros/noetic/setup.bash || true
+        export ROS_DISTRO=${ROS_DISTRO:-noetic}
         rosdep update
-        rosdep install --rosdistro "$ROS_DISTRO" --from-paths /opt/carma/src --ignore-src -y
+        PKG_PATHS=$(grep -Rl "<buildtool_depend>catkin</buildtool_depend>" /opt/carma/src --include=package.xml | xargs -r -n1 dirname | sort -u | tr '\n' ' ')
+        rosdep install --rosdistro "$ROS_DISTRO" --from-paths $PKG_PATHS --ignore-src -y
     - name: Build
       run: |
         source "$INIT_ENV"
