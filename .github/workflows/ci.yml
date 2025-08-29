@@ -50,7 +50,11 @@ jobs:
       run: mv $GITHUB_WORKSPACE/src /opt/carma/
     - name: Install dependencies
       run: |
+        set -eo pipefail
         source "$INIT_ENV"
+        if [ ! -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
+          rosdep init
+        fi
         apt-get update
         rosdep update
         rosdep install --from-paths /opt/carma/src/"${{ github.event.repository.name }}" --ignore-src -y
